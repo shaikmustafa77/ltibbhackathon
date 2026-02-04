@@ -6,17 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-rose-500 via-red-500 to-pink-600 min-h-screen text-white">
+
+<body class="bg-gradient-to-br from-red-500 via-rose-500 to-pink-600 min-h-screen text-white">
 
   <!-- Navbar -->
   <nav class="bg-white/90 backdrop-blur shadow-md">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-xl font-bold text-rose-600">🩸 LTI Blood Bank</h1>
+      <a href="index.html" class="text-xl font-bold text-rose-600">🩸 LTI Blood Bank</a>
       <div class="flex gap-4 text-sm">
-        <a href="donate-blood.php" class="text-gray-600 hover:text-rose-600">Donate</a>
-        <a href="find-donor.php" class="text-gray-600 hover:text-rose-600">Find Donor</a>
-        <a href="signup.php" class="text-gray-600 hover:text-rose-600">Signup</a>
-        <a href="index.php" class="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-600">Login</a>
+        <a href="find-donor.php" class="text-gray-700 hover:text-rose-600">Find Donor</a>
+        <a href="donate-blood.php" class="text-gray-700 hover:text-rose-600">Donate</a>
+        <a href="signup.php" class="text-gray-700 hover:text-rose-600">Signup</a>
       </div>
     </div>
   </nav>
@@ -24,73 +24,47 @@
   <!-- Hero -->
   <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
     <div>
-      <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
-        Save Lives with <br /> Blood Donation ❤️
-      </h2>
-      <p class="text-white/90 mb-8">
-        Find donors, register yourself, and help people in emergencies across LTI.
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">
+        Save Lives with <span class="text-yellow-300">Blood Donation</span>
+      </h1>
+      <p class="text-white/90 mb-6">
+        Find donors instantly or register to donate blood.  
+        A single donation can save up to 3 lives.
       </p>
-      <div class="flex flex-wrap gap-4">
-        <a href="donate-blood.php" class="bg-white text-rose-600 px-6 py-3 rounded-xl font-semibold shadow hover:scale-105 transition">
-          Become a Donor
+
+      <div class="flex gap-4 flex-wrap">
+        <a href="find-donor.php" class="bg-white text-rose-600 px-6 py-3 rounded-xl font-semibold shadow-lg hover:scale-105 transition">
+          Find Donor
         </a>
-        <a href="find-donor.php" class="border border-white px-6 py-3 rounded-xl hover:bg-white/10 transition">
-          Find Donors
+        <a href="donate-blood.php" class="bg-black/30 backdrop-blur px-6 py-3 rounded-xl font-semibold shadow-lg hover:scale-105 transition">
+          Donate Blood
         </a>
       </div>
     </div>
 
-    <div class="hidden md:block">
-      <img src="public/playground_assets/blood%20donation%20logo-500w.png" class="w-full drop-shadow-2xl" />
+    <div class="bg-white/10 backdrop-blur rounded-3xl p-8 shadow-2xl">
+      <ul class="space-y-4 text-white/90">
+        <li>✅ Search donors by city & blood group</li>
+        <li>✅ Real-time availability</li>
+        <li>✅ Verified donor data</li>
+        <li>✅ Admin dashboard</li>
+      </ul>
     </div>
   </section>
 
   <!-- Tools -->
   <section class="bg-white text-gray-800 py-16">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-6 text-center">
-
-      <a href="/bmi/index.html" class="p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
-        <h3 class="font-bold text-lg mb-2">BMI Calculator</h3>
-        <p class="text-sm text-gray-500">Check your health index</p>
-      </a>
-
-      <a href="/weightconverter/index.html" class="p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
-        <h3 class="font-bold text-lg mb-2">Weight Converter</h3>
-        <p class="text-sm text-gray-500">Convert weight units</p>
-      </a>
-
-      <a href="/maps/index.html" class="p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
-        <h3 class="font-bold text-lg mb-2">Maps</h3>
-        <p class="text-sm text-gray-500">Locate nearby places</p>
-      </a>
-
-      <a href="/caloriecalculator/index.html" class="p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
-        <h3 class="font-bold text-lg mb-2">BMR Calculator</h3>
-        <p class="text-sm text-gray-500">Know your calorie needs</p>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="py-16 max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-6">
-    <div class="bg-white/10 backdrop-blur p-6 rounded-2xl shadow-lg">
-      <h3 class="font-bold text-lg mb-2">Fast Donor Search 🔍</h3>
-      <p class="text-white/80 text-sm">Filter donors by city & blood group.</p>
-    </div>
-    <div class="bg-white/10 backdrop-blur p-6 rounded-2xl shadow-lg">
-      <h3 class="font-bold text-lg mb-2">Easy Registration ✍️</h3>
-      <p class="text-white/80 text-sm">Register donors in under 1 minute.</p>
-    </div>
-    <div class="bg-white/10 backdrop-blur p-6 rounded-2xl shadow-lg">
-      <h3 class="font-bold text-lg mb-2">Admin Dashboard 🛡️</h3>
-      <p class="text-white/80 text-sm">Manage donors securely.</p>
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+      <a href="/bmi/index.html" class="p-6 rounded-2xl shadow hover:shadow-xl transition">BMI Calculator</a>
+      <a href="/weightconverter/index.html" class="p-6 rounded-2xl shadow hover:shadow-xl transition">Weight Converter</a>
+      <a href="/maps/index.html" class="p-6 rounded-2xl shadow hover:shadow-xl transition">Blood Banks Map</a>
+      <a href="/caloriecalculator/index.html" class="p-6 rounded-2xl shadow hover:shadow-xl transition">BMR Calculator</a>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="bg-black/30 py-6 text-center text-sm text-white/80">
-    © <?= new Date().getFullYear ? "" : "" ?> LTI Blood Bank – Saving Lives Together ❤️
+    © 2026 LTI Blood Bank – Saving Lives Together ❤️
   </footer>
 
 </body>

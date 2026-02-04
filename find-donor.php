@@ -1,485 +1,136 @@
 <?php
 include "config.php";
 
-// Check user login or not
+// Auth guard
 if(!isset($_SESSION['uname'])){
     header('Location: index.php');
+    exit;
 }
 
-// logout
+// Logout
 if(isset($_POST['but_logout'])){
     session_destroy();
     header('Location: index.php');
+    exit;
 }
-?>
-<!doctype html>
-<html>
-    <head></head>
-    <body>
-            <form method='post' action="">
-            <input type="submit" value="Logout" name="but_logout">
-        </form>
-    </body>
-</html>
 
-<?php
-class script{
+class script {
+    public $con;
 
-        public $con;
+    public function __construct(){
+        $server = "mysqldb";
+        $user = "root";
+        $pass = "admin123";
+        $db = "customers";
+        $this->con = mysqli_connect($server,$user,$pass,$db) or die("unable to connect");
+    }
 
-        public function __construct(){
-
-                $server = "mysqldb";
-                $user = "root";
-                $pass = "admin123";
-                $db = "customers";
-
-                $this->con = mysqli_connect($server,$user,$pass,$db) or die("unable to connect");
-        }
-
-        public function add($fname,$lname,$mobileno,$city,$bfrom,$bto,$dob,$bloodgroup){
-                $sql = "insert into donors(fname,lname,mobileno,city,bfrom,bto,dob,bloodgroup) values('".urlencode($fname)."','".urlencode($lname)."','".urlencode($mobileno)."','".urlencode($city)."','".urlencode($bfrom)."','".urlencode($bto)."','".urlencode($dob)."','".urlencode($bloodgroup)."')";
-                $res = mysqli_query($this->con,$sql) or die("unable to perform operation");
-                if($res) {
-                        echo "Data Added ";
-                } else {
-                        echo "Operational Failure";
-                }
-        }
-                public function getdata() {
-                        $sql = "select * from donors";
-                        $res = mysqli_query($this->con,$sql) or die("unable to fetch");
-                        $cp = mysqli_fetch_assoc($res);
-                        //var_dump($cp);
-                        if(count($cp)){
-                                echo '
-                                <table cellspacing="5" cellpadding="5" border="10">
-                                        <tr >
-                                                <th>First Name </th>
-                                                <th>Last Name</th>
-                                                <th>Mobile Number</th>
-												<th>City</th>
-												<th>Available From</th>	
-                                                <th>Available To</th>
-												<th>Date of Birth</th>
-												<th>Blood Group</th>	
-												
-																			   
-                                        </tr>
-                                ';
-                                while($row = mysqli_fetch_array($res)){
-                                        echo '<tr>
-                                         <td>'.urlencode($row['fname']).'</td>
-                                              <td>'.urlencode($row['lname']).'</td>
-											<td>'.urlencode($row['mobileno']).'</td>
-												<td>'.urlencode($row['city']).'</td>
-												<td>'.urlencode($row['bfrom']).'</td>
-                                                <td>'.urlencode($row['bto']).'</td>
-												 <td>'.urlencode($row['dob']).'</td>
-											 	 <td>'.urlencode($row['bloodgroup']).'</td>
-												 
-												 
-												 </tr>';
-												  
-                                }
-                                        echo '
-                                        </table>
-                                        ';
-                        }else{
-                                echo "No Data Found";
-                        }
-                }
-        }
-
-?>
-
-
-<html lang="en">
-  <head>
- <style>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-  background-color: pink;
+    public function getdata() {
+        $sql = "select * from donors order by id desc";
+        return mysqli_query($this->con,$sql);
+    }
 }
-</style>
-    <title>Find-Donor - LTIBB</title>
-    <meta property="og:title" content="Find-Donor - LTIBB" />
-    <meta property="og:title" content="Blood-Donation-Chart - LTIBB" />
-    <meta property="og:title" content="Donate-Blood - LTIBB" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
-    <meta property="twitter:card" content="summary_large_image" />
-    <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6 {  margin: 0;  padding: 0;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
-    </style>
-    <style data-tag="default-style-sheet">
-      html {
-        font-family: Lexend;
-        font-size: 16px;
-      }
-
-      body {
-        font-weight: 400;
-        font-style:normal;
-        text-decoration: none;
-        text-transform: none;
-        letter-spacing: normal;
-        line-height: 1.1;
-        color: var(--dl-color-grays-dark100);
-        background-color: var(--dl-color-grays-white100);
-
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      data-tag="font"
-    />
-    <style>
-      ::placeholder{
-      color: #63667066;
-      }
-    </style>
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div>
-      <link href="./find-donor.css" rel="stylesheet" />
-
-      <div class="find-donor-container">
-        <main class="find-donor-main">
-          <div class="find-donor-hero section-container">
-            <div class="find-donor-max-width max-content-container">
-              <div class="find-donor-content-container">
-                <span class="find-donor-text">LTI Blood Bank</span>
-                <a href="find-donor.php" class="find-donor-navlink">
-                  <div class="find-donor-card">
-                    <h4 class="find-donor-text01 heading4">Find Donor</h4>
-                    <svg viewBox="0 0 1024 1024" class="find-donor-icon">
-                      <path
-                        d="M731.429 585.143h174.286c-6.857 7.429-11.429 11.429-12.571 12.571l-356 342.857c-6.857 6.857-16 10.286-25.143 10.286s-18.286-3.429-25.143-10.286l-356.571-344c-1.143-0.571-5.714-4.571-12-11.429h210.857c16.571 0 31.429-11.429 35.429-27.429l40-160.571 108.571 381.143c4.571 15.429 18.857 26.286 35.429 26.286v0c16 0 30.286-10.857 34.857-26.286l83.429-277.143 32 64c6.286 12 18.857 20 32.571 20zM1024 340.571c0 65.714-28.571 125.714-58.857 171.429h-210.857l-63.429-126.286c-6.286-13.143-21.143-21.143-35.429-20-15.429 1.714-28 11.429-32 26.286l-73.714 245.714-112-392c-4.571-15.429-18.857-26.286-36-26.286-16.571 0-30.857 11.429-34.857 27.429l-66.286 265.143h-241.714c-30.286-45.714-58.857-105.714-58.857-171.429 0-167.429 102.286-267.429 273.143-267.429 100 0 193.714 78.857 238.857 123.429 45.143-44.571 138.857-123.429 238.857-123.429 170.857 0 273.143 100 273.143 267.429z"
-                      ></path>
-                    </svg>
-                    <span class="find-donor-text02">
-                      <span>
-                        A donor is someone who gives a part of their body or
-                        some of their blood to be used by doctors to help a
-                        person who is ill.
-                      </span>
-                      <br />
-                      <span>
-                        “It can be difficult to find someone willing to donate a
-                        , but it isn&apos;t that difficult to find someone who
-                        cares for the patient
-                      </span>
-                      <br />
-                    </span>
-                    <span class="find-donor-text07">Click Here</span>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-            
-    <form>                
-<button type="submit" formaction="/search.php" style="background: grey; height: 45px; width: 200px; color:white; font:oblique;">Advanced Search</button><br><br>
-</form> 
-          <form method="post">
-<button type="submit" formaction="/index.html" style="background: grey; height: 45px; width: 200px; color:white; font:oblique;">Redirect to home page</button><br><br>
-</form>
-		  <?php
 $script = new script();
-if(isset($_POST['sub'])){
-        $script->add($_POST['fname'],$_POST['lname'],$_POST['mobileno'],$_POST['city'],$_POST['bfrom'],$_POST['bto'],$_POST['dob'],$_POST['bloodgroup']);
-}
-$script->getdata();
+$result = $script->getdata();
 ?>
-		  
-          <div class="find-donor-section-four section-container">
-            <div class="find-donor-max-width1 max-content-container"></div>
-            <div data-type="slider" class="find-donor-slider">
-              <div data-type="slide" class="find-donor-slide slide">
-                <div class="find-donor-max-width2 max-content-container">
-                  <div class="find-donor-left-side">
-                    <div class="find-donor-image-container">
-                      <img
-                        alt="image"
-                        src="public/playground_assets/blood%20donation%20logo-600w.png"
-                        class="find-donor-image"
-                      />
-                      <img
-                        alt="image"
-                        src="public/playground_assets/vector%202%20%5B2%5D-700w.png"
-                        class="find-donor-image01"
-                      />
-                      <div class="find-donor-slider-controls">
-                        <div
-                          data-action="previousSlide"
-                          class="find-donor-go-left"
-                        >
-                          <svg viewBox="0 0 1024 1024" class="find-donor-icon2">
-                            <path
-                              d="M854 470v84h-520l238 240-60 60-342-342 342-342 60 60-238 240h520z"
-                            ></path>
-                          </svg>
-                        </div>
-                        <div
-                          data-action="nextSlide"
-                          class="find-donor-go-right"
-                        >
-                          <svg viewBox="0 0 1024 1024" class="find-donor-icon4">
-                            <path
-                              d="M512 170l342 342-342 342-60-60 238-240h-520v-84h520l-238-240z"
-                            ></path>
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="find-donor-right-side">
-                    <span class="find-donor-testimonial">
-                      Blood donation is an extremely noble deed, yet there is a
-                      scarcity of regular donors across LTI. We focus on
-                      creating &amp; expanding a virtual army of blood donating
-                      volunteers who could be searched and contacted by
-                      family/care givers of a patient in times of need.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="find-donor-section-five section-container">
-            <div class="find-donor-max-width3 max-content-container">
-              <div class="find-donor-cards-container">
-                <div class="find-donor-grid-card">
-                  <img
-                    alt="image"
-                    src="public/playground_assets/vector%203-600h.png"
-                    class="find-donor-image02"
-                  />
-                  <span class="find-donor-text09">
-                    You may need a blood donation in the future.
-                  </span>
-                  <span class="find-donor-text10 content-Light">
-                    Blood donation is considered as the gift of life as there is
-                    no substitute present for human blood. At every 2 second
-                    someone somewhere needs the blood. Every day more than
-                    38,000 blood donations are needed.
-                  </span>
-                </div>
-                <div class="find-donor-grid-card1">
-                  <img
-                    alt="image"
-                    src="public/playground_assets/vector%203%20%5B1%5D-200h.png"
-                    class="find-donor-image03"
-                  />
-                  <span class="find-donor-text11">Safe blood saves lives</span>
-                  <span class="find-donor-text12">
-                    Blood is needed by women with complications during pregnancy
-                    and childbirth, children with severe anaemia, often
-                    resulting from malaria or malnutrition, accident victims and
-                    surgical and cancer patients.
-                  </span>
-                </div>
-                <div class="find-donor-grid-card2">
-                  <img
-                    alt="image"
-                    src="public/playground_assets/vector%203%20%5B2%5D-200h.png"
-                    class="find-donor-image04"
-                  />
-                  <span class="find-donor-text13">
-                    Every donation makes a difference.
-                  </span>
-                  <span class="find-donor-text14 content-Light">
-                    Blood donation is considered as the gift of life as there is
-                    no substitute present for human blood. At every 2 second
-                    someone somewhere needs the blood. Every day more than
-                    38,000 blood donations are needed.
-                  </span>
-                </div>
-                <div class="find-donor-grid-card3">
-                  <img
-                    alt="image"
-                    src="public/playground_assets/vector%203%20%5B3%5D-200h.png"
-                    class="find-donor-image05"
-                  />
-                  <span class="find-donor-text15">
-                    You may need a blood donation in the future.
-                  </span>
-                  <span class="find-donor-text16 content-Light">
-                    Blood donation is considered as the gift of life as there is
-                    no substitute present for human blood. At every 2 second
-                    someone somewhere needs the blood. Every day more than
-                    38,000 blood donations are needed.
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="find-donor-section-six section-container">
-            <div class="find-donor-max-width4 max-content-container"></div>
-            <div class="find-donor-section-six1 section-container">
-              <div class="find-donor-max-width5 max-content-container">
-                <div class="find-donor-content-container1">
-                  <h1 class="find-donor-text17">
-                    <span class="find-donor-text18">
-                      Start Registering for donating blood 
-                    </span>
-                    <br />
-                    <br />
-                  </h1>
-                  <div class="find-donor-input-container">
-                    <img
-                      alt="image"
-                      src="public/playground_assets/stars-600h.png"
-                      class="find-donor-image06"
-                    />
-                    <img
-                      alt="image"
-                      src="public/playground_assets/vector%203-600h.png"
-                      class="find-donor-image07"
-                    />
-                  </div>
-                </div>
-                <div class="find-donor-container1">
-                  <div class="find-donor-image-container1">
-                    <img
-                      alt="image"
-                      src="public/playground_assets/blood%20donation%20logo-600w.png"
-                      class="find-donor-image08"
-                    />
-                    <img
-                      alt="image"
-                      src="public/playground_assets/vector%203%20%5B1%5D-200h.png"
-                      class="find-donor-image09"
-                    />
-                  </div>
-                </div>
-              </div>
-              <button class="find-donor-button button-primary button">
-                Get started
-              </button>
-              <span class="find-donor-text21">It improves your health.</span>
-            </div>
-          </div>
-        </main>
-        <footer class="find-donor-footer section-container">
-          <div class="find-donor-max-width6 max-content-container">
-            <div class="find-donor-container2">
-              <img
-                alt="image"
-                src="public/playground_assets/blood%20donation%20logo%20%5B1%5D-500h.png"
-                class="find-donor-image10"
-              />
-              <span class="find-donor-text22">
-                <br />
-                <span>
-                  Blood Donation Prerequisites is a thing that is required as a
-                  prior condition for something else to happen or exist.A donor
-                  is someone who gives a part of their body or some of their
-                  blood to be used by doctors to help a person who is ill
-                </span>
-              </span>
-            </div>
-            <div class="find-donor-container3">
-              <div class="find-donor-links"></div>
-              <img
-                alt="image"
-                src="public/playground_assets/clipart1033863-600w.png"
-                class="find-donor-image11"
-              />
-            </div>
-            <img
-              alt="image"
-              src="public/playground_assets/blood%20donation%20logo%20%5B1%5D-500h.png"
-              class="find-donor-image12"
-            />
-          </div>
-        </footer>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Find Donor – Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-red-500 via-rose-500 to-pink-600">
+
+  <!-- Navbar -->
+  <div class="bg-white/90 backdrop-blur shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-xl font-bold text-rose-600">🩸 LTI Blood Bank</h1>
+
+      <div class="flex items-center gap-3">
+        <a href="donate-blood.php" class="text-sm text-gray-600 hover:text-rose-600">Donate</a>
+        <a href="search.php" class="text-sm text-gray-600 hover:text-rose-600">Advanced Search</a>
+
+        <form method="post">
+          <button 
+            name="but_logout"
+            class="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-600 transition"
+          >
+            Logout
+          </button>
+        </form>
       </div>
     </div>
-    <script src="https://unpkg.com/@teleporthq/teleport-custom-scripts"></script>
-    <script>
-      window.onload = () => {
-        const runAllScripts = () => {
-          initializeAllSliders();
-        };
+  </div>
 
-        const listenForUrlChanges = () => {
-          let url = location.href;
-          document.body.addEventListener(
-            "click",
-            () => {
-              requestAnimationFrame(() => {
-                if (url !== location.href) {
-                  runAllScripts();
-                  url = location.href;
-                }
-              });
-            },
-            true
-          );
-        };
+  <!-- Main -->
+  <div class="max-w-7xl mx-auto px-4 py-10">
 
-        const initializeAllSliders = () => {
-          const allSliders = document.querySelectorAll('[data-type="slider"]');
-          allSliders.forEach((carrousel) => {
-            initializeSlider(carrousel);
-          });
-        };
+    <div class="bg-white rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-52 h-52 bg-pink-400/30 rounded-full blur-3xl"></div>
 
-        const initializeSlider = (carrousel) => {
-          let currentSlide = 0;
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-800">Find Donors 🔍</h2>
+          <p class="text-gray-500">Browse available donors</p>
+        </div>
 
-          const slides = carrousel.querySelectorAll('[data-type="slide"]');
-          const nextSlideBtns = carrousel.querySelectorAll(
-            '[data-action="nextSlide"]'
-          );
-          const previousSlideBtns = carrousel.querySelectorAll(
-            '[data-action="previousSlide"]'
-          );
+        <div class="flex gap-3">
+          <a href="search.php" class="bg-gray-100 px-4 py-2 rounded-lg text-sm hover:bg-gray-200">
+            Advanced Search
+          </a>
+          <a href="index.html" class="bg-gray-100 px-4 py-2 rounded-lg text-sm hover:bg-gray-200">
+            Home
+          </a>
+        </div>
+      </div>
 
-          const changeSlide = (slideIndex, action) => {
-            currentSlide = slideIndex;
+      <div class="overflow-x-auto rounded-xl border">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-gray-50 sticky top-0">
+            <tr class="text-gray-600">
+              <th class="px-4 py-3">First Name</th>
+              <th class="px-4 py-3">Last Name</th>
+              <th class="px-4 py-3">Mobile</th>
+              <th class="px-4 py-3">City</th>
+              <th class="px-4 py-3">Available From</th>
+              <th class="px-4 py-3">Available To</th>
+              <th class="px-4 py-3">DOB</th>
+              <th class="px-4 py-3">Blood Group</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y">
+            <?php if($result && mysqli_num_rows($result) > 0): ?>
+              <?php while($row = mysqli_fetch_assoc($result)): ?>
+                <tr class="hover:bg-rose-50 transition">
+                  <td class="px-4 py-2"><?= htmlspecialchars($row['fname']) ?></td>
+                  <td class="px-4 py-2"><?= htmlspecialchars($row['lname']) ?></td>
+                  <td class="px-4 py-2"><?= htmlspecialchars($row['mobileno']) ?></td>
+                  <td class="px-4 py-2"><?= htmlspecialchars($row['city']) ?></td>
+                  <td class="px-4 py-2"><?= htmlspecialchars($row['bfrom']) ?></td>
+                  <td class="px-4 py-2"><?= htmlspecialchars($row['bto']) ?></td>
+                  <td class="px-4 py-2"><?= htmlspecialchars($row['dob']) ?></td>
+                  <td class="px-4 py-2 font-semibold text-rose-600">
+                    <?= htmlspecialchars(str_replace('_',' ', $row['bloodgroup'])) ?>
+                  </td>
+                </tr>
+              <?php endwhile; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan="8" class="text-center py-6 text-gray-500">
+                  No donors found.
+                </td>
+              </tr>
+            <?php endif; ?>
+          </tbody>
+        </table>
+      </div>
 
-            switch (action) {
-              case "next":
-                slideIndex === slides.length - 1
-                  ? (currentSlide = 0)
-                  : currentSlide++;
-                break;
-              case "previous":
-                slideIndex === 0
-                  ? (currentSlide = slides.length - 1)
-                  : currentSlide--;
-            }
+    </div>
+  </div>
 
-            carrousel.style.transform = `translateX(${-100 * currentSlide}%)`;
-          };
-
-          previousSlideBtns.forEach((btn) => {
-            btn.addEventListener("click", () =>
-              changeSlide(currentSlide, "previous")
-            );
-          });
-
-          nextSlideBtns.forEach((btn) => {
-            btn.addEventListener("click", () =>
-              changeSlide(currentSlide, "next")
-            );
-          });
-        };
-
-        runAllScripts();
-      };
-    </script>
-  </body>
+</body>
 </html>
